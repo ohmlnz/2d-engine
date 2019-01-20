@@ -1,36 +1,28 @@
-class Engine {
-	step(elapsed) {
-		let gx = GRAVITY_X * elapsed;
-		let gy = GRAVITY_Y * elapsed;
-		let entity;
-		let entities = this.entities;
-		
-		for (let i = 0, length = entities.length; i < length; i++) {
-			entity = entities[i];
-			switch (entity.type) {
-				case PhysicsEntity.DYNAMIC:
-					entity.vx += entity.ax * elapsed + gx;
-					entity.vy += entity.ay * elapsed + gy;
-					entity.x  += entity.vx * elapsed;
-					entity.y  += entity.vy * elapsed;
-					break;
-				case PhysicsEntity.KINEMATIC:
-					entity.vx += entity.ax * elapsed;
-					entity.vy += entity.ay * elapsed;
-					entity.x  += entity.vx * elapsed;
-					entity.y  += entity.vy * elapsed;
-					break;
-			}
-		}
-		
-		let collisions = this.collider.detectCollisions(
-			this.player, 
-			this.collidables
-		);
+import CollisionDetector from './detector.js'
+import CollisionResolver from './resolver.js'
+let detector = new CollisionDetector()
+let resolver = new CollisionResolver()
 
-		if (collisions != null) {
-			this.solver.resolve(this.player, collisions);
-		}
+
+class Engine {
+	step(player, entities, input) {
+		// handles positional logic
+		new Promise((resolve, reject) => {
+			if (input === 37 || input === 65) {
+				player.setX = player.x - 3
+			} else if (input === 39 || input === 68) {
+				player.setX = player.x + 3
+			}
+			resolve()
+		}).then(() => {
+			// detect and resolve each collision individually
+			entities.forEach(collidee => {
+				let collision = detector.isColliding(player, collidee)
+				if (collision) {
+					resolver.resolveElastic(player, collidee)
+				}
+			})
+		})			
 	}
 }
 
