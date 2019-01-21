@@ -1,42 +1,50 @@
-import PhysicsEntity from './engine/model.js';
-import Controls from './controller/controls.js';
-import Engine from './engine/engine.js';
-import { setFps } from './helpers.js';
+import { setFps, stopLoop } from './helpers.js';
 
-let pos_x = 100, pos_y = 100;
-let canvas, ctx;
-let player = new PhysicsEntity(pos_x, pos_y, 'red');
-let entity = new PhysicsEntity(170, 100, 'blue');
-let engine = new Engine();
-let controls = new Controls(player);
+let canvas, ctx
 
-window.onload = init;
+class Game {
+  constructor(player, entity, engine, controls) {
+    this.player = player
+    this.entity = entity
+    this.engine = engine
+    this.controls = controls
+    this.fps = 60
+  }
 
-function init() {
-  canvas = document.getElementById('canvas');
-  ctx = canvas.getContext('2d');
-  canvas.width = 500;
-  canvas.height = 500;
+  set setFps(fps) {
+    stopLoop()
+    setFps(fps, this.render)
+    return this.fps = fps
+  }
 
-  // return if browser doesn't support WebGL or if failure
-  if (!window.WebGLRenderingContext || !ctx) return;
+  init() {
+    canvas = document.getElementById('canvas');
+    ctx = canvas.getContext('2d');
+    canvas.width = 500;
+    canvas.height = 250;
   
-  ['keydown', 'keyup'].forEach((event) => {
-    document.addEventListener(event, e => {
-      const input = controls.checkInput(e)
-      engine.step(player, [entity], input)
-    }, false);
-  })
-  setFps(60, render)
+    // return if browser doesn't support WebGL or if failure
+    if (!window.WebGLRenderingContext || !ctx) return;
+    
+    ['keydown', 'keyup'].forEach((event) => {
+      document.addEventListener(event, e => {
+        const input = this.controls.checkInput(e)
+        this.engine.step(this.player, [this.entity], input)
+      }, false);
+    })
+    setFps(this.fps, this.render)
+  }
+  
+  render = () => {
+    ctx.fillStyle = this.player.color;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.strokeStyle = 'black';
+    ctx.strokeRect(this.player.x, this.player.y, this.player.width, this.player.height);
+  
+    ctx.fillStyle = this.entity.color;
+    ctx.strokeStyle = 'red';
+    ctx.strokeRect(this.entity.x, this.entity.y, this.entity.width, this.entity.height);
+  }  
 }
 
-function render() {
-  ctx.fillStyle = player.color;
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.strokeStyle = 'black';
-  ctx.strokeRect(player.x, player.y, player.width, player.height);
-
-  ctx.fillStyle = entity.color;
-  ctx.strokeStyle = 'red';
-  ctx.strokeRect(entity.x, entity.y, entity.width, entity.height);
-}
+export default Game;

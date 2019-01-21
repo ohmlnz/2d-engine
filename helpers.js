@@ -7,21 +7,26 @@ function requestAnimFrame(r) {
 /* Based on markE's answer: */
 /* https://stackoverflow.com/a/19772220 */
 
+let animId
+
+export function stopLoop() {
+  window.cancelAnimationFrame(animId)
+}
+
 export function setFps(fps, render) {
-  let startTime, fpsInterval, now, then, elapsed;
+  let fpsInterval, now, then, elapsed
 
   // initialize the timer variables and start the animation
   function startAnimating(fps) {
     fpsInterval = 1000 / fps;
     then = Date.now();
-    startTime = then;
     animate();
   }
 
   function animate() {
     // request another frame
-    requestAnimFrame(animate);
-  
+    animId = requestAnimFrame(animate);
+
     // calc elapsed time since last loop
     now = Date.now();
     elapsed = now - then;
@@ -37,5 +42,5 @@ export function setFps(fps, render) {
     }
   }
 
-  startAnimating(60);
+  startAnimating(fps);
 }

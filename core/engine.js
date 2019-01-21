@@ -3,15 +3,14 @@ import CollisionResolver from './resolver.js'
 let detector = new CollisionDetector()
 let resolver = new CollisionResolver()
 
-
 class Engine {
 	step(player, entities, input) {
 		// handles positional logic
 		new Promise((resolve, reject) => {
 			if (input === 37 || input === 65) {
-				player.setX = player.x - 3
+				player.setX = player.x - player.speed
 			} else if (input === 39 || input === 68) {
-				player.setX = player.x + 3
+				player.setX = player.x + player.speed
 			}
 			resolve()
 		}).then(() => {

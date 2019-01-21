@@ -1,3 +1,5 @@
+import { constants } from '../constants.js'
+
 class PhysicsEntity {
 	constructor(posX, posY, color) {
     this.width  = 20;
@@ -21,6 +23,9 @@ class PhysicsEntity {
 
     // Color
     this.color = color;
+
+    // Speed
+    this.speed = constants.speed
 	}
 
 	updateBounds() {
@@ -67,6 +72,10 @@ class PhysicsEntity {
 
   set setY(y) {
     return this.y = y
+  }
+
+  set setSpeed(value) {
+    return this.speed = value
   }
 }
 
