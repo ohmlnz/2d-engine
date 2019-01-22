@@ -1,6 +1,6 @@
-import { setFps, stopLoop } from './helpers.js';
+import { requestAnimFrame } from './helpers.js';
 
-let canvas, ctx
+let canvas, ctx, input = {}
 
 class Game {
   constructor(player, entity, engine, controls) {
@@ -8,13 +8,6 @@ class Game {
     this.entity = entity
     this.engine = engine
     this.controls = controls
-    this.fps = 60
-  }
-
-  set setFps(fps) {
-    stopLoop()
-    setFps(fps, this.render)
-    return this.fps = fps
   }
 
   init() {
@@ -28,19 +21,23 @@ class Game {
     
     ['keydown', 'keyup'].forEach((event) => {
       document.addEventListener(event, e => {
-        const input = this.controls.checkInput(e)
-        this.engine.step(this.player, [this.entity], input)
+        input = this.controls.checkInput(e)
       }, false);
     })
-    setFps(this.fps, this.render)
+
+    this.animate()
+  }
+
+  animate = () => {
+    requestAnimFrame(this.animate);
+    ctx.clearRect(0, 0, 500, 250)
+    this.engine.step(this.player, [this.entity], input)
+    this.draw()
   }
   
-  render = () => {
-    ctx.fillStyle = this.player.color;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.strokeStyle = 'black';
-    ctx.strokeRect(this.player.x, this.player.y, this.player.width, this.player.height);
-  
+  draw = () => {
+		ctx.fillStyle = this.player.color;
+		ctx.fillRect(this.player.x, this.player.y, this.player.width, this.player.height);
     ctx.fillStyle = this.entity.color;
     ctx.strokeStyle = 'red';
     ctx.strokeRect(this.entity.x, this.entity.y, this.entity.width, this.entity.height);

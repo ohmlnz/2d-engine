@@ -1,3 +1,3 @@
 export const constants = {
-  speed: 3
+  acc: 0.03
 }

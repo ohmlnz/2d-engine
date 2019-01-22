@@ -56,27 +56,6 @@ class PhysicsEntity {
 	get bottom() {
 		return this.y + this.height;
 	}
-
-	// Setters for the position, velocity, 
-	// and acceleration
-	set pos({ x, y }) {
-		return {
-			[this.x]: x,
-      [this.y]: y
-    }
-  }
-  
-  set setX(x) {
-    return this.x = x
-  }
-
-  set setY(y) {
-    return this.y = y
-  }
-
-  set setSpeed(value) {
-    return this.speed = value
-  }
 }
 
 export default PhysicsEntity;

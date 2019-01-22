@@ -1,6 +1,5 @@
 class Controls {
-  constructor(player) {
-    this.player = player
+  constructor() {
     this.keyMap = {
       32: null,
       39: null,
@@ -11,13 +10,8 @@ class Controls {
   }
 
   checkInput(k) { 
-    for (let i in this.keyMap) {
-      if (+i === k.keyCode) {
-        return +i
-        // check for multiple inputs
-        //this.keyMap[k.keyCode] = k.type == 'keydown'
-      }
-    }
+    this.keyMap[k.keyCode] = k.type === 'keydown'
+    return this.keyMap
   }
 }
 

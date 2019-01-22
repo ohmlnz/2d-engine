@@ -1,17 +1,12 @@
-function requestAnimFrame(r) {
+export function requestAnimFrame(r) {
   return window.requestAnimationFrame(r) ||
    window.webkitRequestAnimationFrame(r) ||
    window.mozRequestAnimationFrame(r)
 }
 
+
 /* Based on markE's answer: */
 /* https://stackoverflow.com/a/19772220 */
-
-let animId
-
-export function stopLoop() {
-  window.cancelAnimationFrame(animId)
-}
 
 export function setFps(fps, render) {
   let fpsInterval, now, then, elapsed
@@ -25,22 +20,19 @@ export function setFps(fps, render) {
 
   function animate() {
     // request another frame
-    animId = requestAnimFrame(animate);
+    requestAnimFrame(animate);
 
     // calc elapsed time since last loop
     now = Date.now();
     elapsed = now - then;
-  
+
     // if enough time has elapsed, draw the next frame
     if (elapsed > fpsInterval) {
-  
       // Get ready for next frame by setting then=now, but also adjust for your
       // specified fpsInterval not being a multiple of RAF's interval (16.7ms)
       then = now - (elapsed % fpsInterval);
-
       render()
     }
   }
-
   startAnimating(fps);
 }
