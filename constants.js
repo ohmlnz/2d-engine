@@ -1,3 +1,3 @@
 export const constants = {
-  acc: 0.03
+  acc: 0.06
 }

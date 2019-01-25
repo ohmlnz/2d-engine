@@ -25,7 +25,12 @@ class PhysicsEntity {
     this.color = color;
 
     // Speed
-    this.speed = constants.speed
+    this.speed = constants.acc
+
+    // Jump
+    this.isJumping = false
+    this.isFalling = false
+    this.maxJump = 150  
 	}
 
 	updateBounds() {

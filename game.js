@@ -36,7 +36,7 @@ class Game {
   }
   
   draw = () => {
-		ctx.fillStyle = this.player.color;
+    ctx.fillStyle = this.player.color;
 		ctx.fillRect(this.player.x, this.player.y, this.player.width, this.player.height);
     ctx.fillStyle = this.entity.color;
     ctx.strokeStyle = 'red';
