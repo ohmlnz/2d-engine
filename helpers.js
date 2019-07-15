@@ -1,15 +1,16 @@
 export function requestAnimFrame(r) {
-  return window.requestAnimationFrame(r) ||
-   window.webkitRequestAnimationFrame(r) ||
-   window.mozRequestAnimationFrame(r)
+  return (
+    window.requestAnimationFrame(r) ||
+    window.webkitRequestAnimationFrame(r) ||
+    window.mozRequestAnimationFrame(r)
+  );
 }
-
 
 /* Based on markE's answer: */
 /* https://stackoverflow.com/a/19772220 */
 
 export function setFps(fps, render) {
-  let fpsInterval, now, then, elapsed
+  let fpsInterval, now, then, elapsed;
 
   // initialize the timer variables and start the animation
   function startAnimating(fps) {
@@ -31,8 +32,12 @@ export function setFps(fps, render) {
       // Get ready for next frame by setting then=now, but also adjust for your
       // specified fpsInterval not being a multiple of RAF's interval (16.7ms)
       then = now - (elapsed % fpsInterval);
-      render()
+      render();
     }
   }
   startAnimating(fps);
+}
+
+export function random(max, min = 0) {
+  return Math.random() * (max - min) + min;
 }

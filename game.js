@@ -5,39 +5,44 @@ let canvas,
   input = {};
 
 class Game {
-  constructor(player, entity, engine, controls) {
+  constructor(player, entity, engine, controls, auto) {
     this.player = player;
     this.entity = entity;
     this.engine = engine;
     this.controls = controls;
+    this.auto = auto || false;
   }
 
   init() {
     canvas = document.getElementById('canvas');
     ctx = canvas.getContext('2d');
-    canvas.width = 500;
+    canvas.width = 1500;
     canvas.height = 250;
 
     // return if browser doesn't support WebGL or if failure
     if (!window.WebGLRenderingContext || !ctx) return;
 
-    ['keydown', 'keyup'].forEach(event => {
-      document.addEventListener(
-        event,
-        e => {
-          input = this.controls.checkInput(e);
-        },
-        false
-      );
-    });
+    if (!this.auto) {
+      ['keydown', 'keyup'].forEach(event => {
+        document.addEventListener(
+          event,
+          e => {
+            input = this.controls.checkInput(e);
+          },
+          false
+        );
+      });
+    } else {
+      input = this.controls;
+    }
 
     this.animate();
   }
 
   animate = () => {
     requestAnimFrame(this.animate);
-    ctx.clearRect(0, 0, 500, 250);
-    this.engine.step(this.player, this.entity ? [this.entity] : null, input);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    this.engine.step(this.player, this.entity ? this.entity : null, input);
     this.draw();
   };
 
@@ -50,15 +55,11 @@ class Game {
       this.player.height
     );
 
-    if (this.entity) {
-      ctx.fillStyle = this.entity.color;
-      ctx.strokeStyle = 'red';
-      ctx.strokeRect(
-        this.entity.x,
-        this.entity.y,
-        this.entity.width,
-        this.entity.height
-      );
+    if (this.entity.length) {
+      this.entity.forEach(e => {
+        ctx.fillStyle = e.color;
+        ctx.fillRect(e.x, e.y, e.width, e.height);
+      });
     }
   };
 }

@@ -7,3 +7,13 @@ export const keys = {
   37: 'LEFT',
   32: 'UP'
 };
+
+export const colors = [
+  'red',
+  'blue',
+  'yellow',
+  'green',
+  'black',
+  'pink',
+  'brown'
+];

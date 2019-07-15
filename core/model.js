@@ -1,13 +1,13 @@
-import { constants } from '../constants.js'
+import { constants } from '../constants.js';
 
 class PhysicsEntity {
-	constructor(posX, posY, color) {
-    this.width  = 20;
-    this.height = 20;
+  constructor(posX, posY, width, height, color) {
+    this.width = width;
+    this.height = height;
 
     // Store a half size for quicker calculations
-    this.halfWidth = this.width * .5;
-    this.halfHeight = this.height * .5;
+    this.halfWidth = this.width * 0.5;
+    this.halfHeight = this.height * 0.5;
 
     // Position
     this.x = posX || 0;
@@ -25,18 +25,18 @@ class PhysicsEntity {
     this.color = color;
 
     // Speed
-    this.speed = constants.acc
+    this.speed = constants.acc;
 
     // Jump
-    this.isJumping = false
-    this.isFalling = false
-    this.maxJump = 150  
-	}
+    this.isJumping = false;
+    this.isFalling = false;
+    this.maxJump = 150;
+  }
 
-	updateBounds() {
-		this.halfWidth = this.width * .5;
-		this.halfHeight = this.height * .5;
-	}
+  updateBounds() {
+    this.halfWidth = this.width * 0.5;
+    this.halfHeight = this.height * 0.5;
+  }
 
   // Getters for the mid point of the rect
   get midX() {
@@ -51,16 +51,16 @@ class PhysicsEntity {
   // of the rectangle
   get top() {
     return this.y;
-	}
-	get left() {
-		return this.x;
-	}
-	get right() {
-		return this.x + this.width;
-	}
-	get bottom() {
-		return this.y + this.height;
-	}
+  }
+  get left() {
+    return this.x;
+  }
+  get right() {
+    return this.x + this.width;
+  }
+  get bottom() {
+    return this.y + this.height;
+  }
 }
 
 export default PhysicsEntity;
