@@ -1,7 +1,6 @@
 import CollisionDetector from './detector.js';
 import CollisionResolver from './resolver.js';
 import { constants } from '../constants.js';
-import { hasChanged } from '../helpers.js';
 
 let detector = new CollisionDetector();
 let resolver = new CollisionResolver();
@@ -30,7 +29,7 @@ class Engine {
   }
 
   async handleJumps(player, input) {
-    if (input['UP'] && !player.isJumping) {
+    if (input['UP'] && !player.isJumping && !player.isFalling) {
       player.isJumping = true;
     }
 
