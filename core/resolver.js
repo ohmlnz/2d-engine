@@ -50,7 +50,20 @@ class CollisionResolver {
       } else {
         // If the player is approaching from negative Y
         player.y = entity.top - player.height;
+
+        // stop falling if collides with top part of entity
+        player.isFalling = false;
+        player.isJumping = false;
       }
+    }
+
+    // re-enable falling boolean if exceeds bounds of entity
+    if (
+      (player.left + player.width <= entity.left ||
+        player.right - player.width >= entity.right) &&
+      !player.isJumping
+    ) {
+      player.isFalling = true;
     }
   }
 }

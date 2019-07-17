@@ -30,7 +30,11 @@ class PhysicsEntity {
     // Jump
     this.isJumping = false;
     this.isFalling = false;
-    this.maxJump = 150;
+    this.maxJump = this.y - 50;
+  }
+
+  updateJumpBoundaries() {
+    this.maxJump = this.y - 50;
   }
 
   updateBounds() {

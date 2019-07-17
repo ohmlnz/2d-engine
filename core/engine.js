@@ -1,6 +1,7 @@
 import CollisionDetector from './detector.js';
 import CollisionResolver from './resolver.js';
 import { constants } from '../constants.js';
+import { hasChanged } from '../helpers.js';
 
 let detector = new CollisionDetector();
 let resolver = new CollisionResolver();
@@ -28,11 +29,9 @@ class Engine {
     player.x += player.vx;
   }
 
-  handleJumps(player, input) {
-    if (input[32]) {
-      if (!player.isJumping) {
-        player.isJumping = true;
-      }
+  async handleJumps(player, input) {
+    if (input['UP'] && !player.isJumping) {
+      player.isJumping = true;
     }
 
     if (player.isJumping && !player.isFalling) {
@@ -41,8 +40,10 @@ class Engine {
         player.isJumping = false;
         player.isFalling = true;
       }
-    } else {
+    } else if (player.isFalling) {
+      player.updateJumpBoundaries();
       player.y += 3.5;
+      // if player touches the ground
       if (player.y > 200) {
         player.isFalling = false;
         player.ay = 0;
@@ -56,7 +57,7 @@ class Engine {
     //handles positional logic
     //await this.handleAcceleration(player, input);
     await this.handleConstantMotion(player, input);
-    //await this.handleJumps(player, input)
+    await this.handleJumps(player, input);
 
     // detect and resolve each collision individually
     if (entities) {

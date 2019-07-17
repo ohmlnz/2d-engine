@@ -8,7 +8,7 @@ export const levelOne = {
   },
   'block-2': {
     color: 'blue',
-    dimensions: [300, 200, 150, 50]
+    dimensions: [400, 200, 150, 50]
   },
   'block-3': {
     color: 'purple',
@@ -27,7 +27,7 @@ export const randomLevel = () => {
       ...properties,
       [`block-${i}`]: {
         color: colors[Math.floor(random(colors.length - 1))],
-        dimensions: [random(1500, 100), 200, random(300, 100), random(100, 50)]
+        dimensions: [random(1500, 100), 250, random(100, 50), random(-10, -50)]
       }
     };
   }
