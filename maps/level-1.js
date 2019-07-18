@@ -16,7 +16,7 @@ export const levelOne = {
   },
   'block-4': {
     color: 'purple',
-    dimensions: [1200, 130, 250, 120]
+    dimensions: [1200, 200, 250, 50]
   }
 };
 

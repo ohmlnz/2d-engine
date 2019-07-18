@@ -39,9 +39,28 @@ class Game {
     this.animate();
   }
 
+  clamp = (value, min, max) => {
+    if (value >= max) {
+      return max;
+    } else if (value <= min) {
+      return min;
+    } else {
+      return value;
+    }
+  };
+
   animate = () => {
     requestAnimFrame(this.animate);
+
+    ctx.setTransform(1, 0, 0, 1, 0, 0); // reset current transformation
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // clamp the camera position to the world bounds while centering the camera around the player
+    const camX = this.clamp(-this.player.x + canvas.width / 2, -1000, 800);
+    const camY = -120 + canvas.height / 2;
+
+    ctx.translate(camX, camY);
+
     this.engine.step(this.player, this.entity ? this.entity : null, input);
     this.draw();
   };
