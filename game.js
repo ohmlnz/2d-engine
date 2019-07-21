@@ -1,4 +1,5 @@
 import { requestAnimFrame } from './helpers.js';
+import { gamepadAPI } from './controller/gamepad.js';
 
 let canvas,
   ctx,
@@ -23,6 +24,7 @@ class Game {
     if (!window.WebGLRenderingContext || !ctx) return;
 
     if (!this.auto) {
+      //keyboard controls
       ['keydown', 'keyup'].forEach(event => {
         document.addEventListener(
           event,
@@ -66,20 +68,27 @@ class Game {
   };
 
   draw = () => {
-    ctx.fillStyle = this.player.color;
-    ctx.fillRect(
-      this.player.x,
-      this.player.y,
-      this.player.width,
-      this.player.height
-    );
+    // ctx.fillStyle = this.player.color;
+    // ctx.fillRect(
+    //   this.player.x,
+    //   this.player.y,
+    //   this.player.width,
+    //   this.player.height
+    // );
 
-    if (this.entity.length) {
-      this.entity.forEach(e => {
-        ctx.fillStyle = e.color;
-        ctx.fillRect(e.x, e.y, e.width, e.height);
-      });
-    }
+    // if (this.entity.length) {
+    //   this.entity.forEach(e => {
+    //     ctx.fillStyle = e.color;
+    //     ctx.fillRect(e.x, e.y, e.width, e.height);
+    //   });
+    // }
+
+    const { status, currentStatus, currentTick } = this.player;
+    const { sheet } = status;
+    const { x, y, w, h } = status[currentStatus][currentTick];
+
+    // Draw the sprite
+    ctx.drawImage(sheet.image, x, y, w, h, this.player.x, this.player.y, w, h);
   };
 }
 

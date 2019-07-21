@@ -1,7 +1,7 @@
 import { constants } from '../constants.js';
 
 class PhysicsEntity {
-  constructor(posX, posY, width, height, color) {
+  constructor(posX, posY, width, height, color, status) {
     this.width = width;
     this.height = height;
 
@@ -21,8 +21,15 @@ class PhysicsEntity {
     this.ax = 0;
     this.ay = 0;
 
-    // Color
     this.color = color;
+
+    // Status
+    this.status = status;
+    this.currentStatus = 'idle';
+
+    // Ticks
+    //this.maxTickValue = this.status[this.currentStatus].length;
+    this.currentTick = 0;
 
     // Speed
     this.speed = constants.acc;
@@ -31,6 +38,10 @@ class PhysicsEntity {
     this.isJumping = false;
     this.isFalling = false;
     this.maxJump = this.y - 50;
+  }
+
+  updateStatus(status) {
+    this.currentStatus = status;
   }
 
   updateJumpBoundaries() {

@@ -31,6 +31,7 @@ class Engine {
   async handleJumps(player, input) {
     if (input['UP'] && !player.isJumping && !player.isFalling) {
       player.isJumping = true;
+      player.updateStatus('jumping');
     }
 
     if (player.isJumping && !player.isFalling) {
@@ -44,6 +45,7 @@ class Engine {
       player.y += 3.5;
       // if player touches the ground
       if (player.y > 200) {
+        player.updateStatus('idle');
         player.isFalling = false;
         player.ay = 0;
         player.vy = 0;

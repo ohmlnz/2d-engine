@@ -1,4 +1,10 @@
-import spritesheet from './businessman.png';
+// Data extracted as JSON-TP-Hash
+// Adding type property to each sprite and
+// changing the image associated to the metadata
+
+import businessman from './businessman.png';
+let image = new Image();
+image.src = businessman;
 
 export const spriteData = {
   frames: {
@@ -60,7 +66,7 @@ export const spriteData = {
     }
   },
   meta: {
-    image: spritesheet,
+    image: image,
     size: { w: 128, h: 128 },
     scale: 1
   }
