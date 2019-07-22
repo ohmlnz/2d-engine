@@ -68,27 +68,49 @@ class Game {
   };
 
   draw = () => {
-    // ctx.fillStyle = this.player.color;
-    // ctx.fillRect(
-    //   this.player.x,
-    //   this.player.y,
-    //   this.player.width,
-    //   this.player.height
-    // );
+    if (!this.player.status) {
+      ctx.fillStyle = this.player.color;
+      ctx.fillRect(
+        this.player.x,
+        this.player.y,
+        this.player.width,
+        this.player.height
+      );
+    } else {
+      const {
+        status,
+        currentStatus,
+        currentStatusIndex,
+        currentDirection
+      } = this.player;
+      const { sheet } = status;
+      const { x, y, w, h } = status[currentStatus][currentDirection][
+        currentStatusIndex
+      ];
 
-    // if (this.entity.length) {
-    //   this.entity.forEach(e => {
-    //     ctx.fillStyle = e.color;
-    //     ctx.fillRect(e.x, e.y, e.width, e.height);
-    //   });
-    // }
+      this.player.updateTick();
 
-    const { status, currentStatus, currentTick } = this.player;
-    const { sheet } = status;
-    const { x, y, w, h } = status[currentStatus][currentTick];
+      // Draw the sprite
+      ctx.drawImage(
+        sheet.image,
+        x,
+        y,
+        w,
+        h,
+        this.player.x,
+        this.player.y,
+        w,
+        h
+      );
+    }
 
-    // Draw the sprite
-    ctx.drawImage(sheet.image, x, y, w, h, this.player.x, this.player.y, w, h);
+    // Draw entities
+    if (this.entity.length) {
+      this.entity.forEach(e => {
+        ctx.fillStyle = e.color;
+        ctx.fillRect(e.x, e.y, e.width, e.height);
+      });
+    }
   };
 }
 

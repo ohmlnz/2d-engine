@@ -8,9 +8,15 @@ let resolver = new CollisionResolver();
 class Engine {
   handleConstantMotion(player, input) {
     if (input['RIGHT']) {
+      player.updateDirection('right');
+      player.currentStatus !== 'walking' && player.updateStatus('walking');
       player.x += 5;
     } else if (input['LEFT']) {
+      player.updateDirection('left');
+      player.currentStatus !== 'walking' && player.updateStatus('walking');
       player.x -= 5;
+    } else if (player.currentStatus === 'walking') {
+      player.updateStatus('idle');
     }
   }
 

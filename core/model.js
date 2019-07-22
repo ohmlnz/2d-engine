@@ -1,7 +1,7 @@
 import { constants } from '../constants.js';
 
 class PhysicsEntity {
-  constructor(posX, posY, width, height, color, status) {
+  constructor(posX, posY, width, height, color, status = null) {
     this.width = width;
     this.height = height;
 
@@ -26,9 +26,11 @@ class PhysicsEntity {
     // Status
     this.status = status;
     this.currentStatus = 'idle';
+    this.currentDirection = 'right';
+    this.currentStatusIndex = 0;
+    this.maxStatusIndex = 0;
 
     // Ticks
-    //this.maxTickValue = this.status[this.currentStatus].length;
     this.currentTick = 0;
 
     // Speed
@@ -38,10 +40,35 @@ class PhysicsEntity {
     this.isJumping = false;
     this.isFalling = false;
     this.maxJump = this.y - 50;
+
+    // Framerate
+    this.framerate = 8;
+  }
+
+  updateDirection(direction) {
+    this.currentDirection = direction;
+  }
+
+  updateTick() {
+    this.currentTick++;
+
+    if (this.currentTick >= this.framerate) {
+      this.currentTick = 0;
+      this.currentStatusIndex++;
+    }
+
+    if (this.currentStatusIndex >= this.maxStatusIndex) {
+      this.currentStatusIndex = 0;
+    }
   }
 
   updateStatus(status) {
     this.currentStatus = status;
+    this.currentTick = 0;
+    this.currentStatusIndex = 0;
+    this.maxStatusIndex = this.status[this.currentStatus][
+      this.currentDirection
+    ].length;
   }
 
   updateJumpBoundaries() {
@@ -53,7 +80,7 @@ class PhysicsEntity {
     this.halfHeight = this.height * 0.5;
   }
 
-  // Getters for the mid point of the rect
+  // Getters for mid points
   get midX() {
     return this.halfWidth + this.x;
   }
@@ -62,8 +89,7 @@ class PhysicsEntity {
     return this.halfHeight + this.y;
   }
 
-  // Getters for the top, left, right, and bottom
-  // of the rectangle
+  // Getters for top, left, right, and bottom
   get top() {
     return this.y;
   }
