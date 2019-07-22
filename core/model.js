@@ -63,12 +63,14 @@ class PhysicsEntity {
   }
 
   updateStatus(status) {
-    this.currentStatus = status;
-    this.currentTick = 0;
-    this.currentStatusIndex = 0;
-    this.maxStatusIndex = this.status[this.currentStatus][
-      this.currentDirection
-    ].length;
+    if (this.status) {
+      this.currentStatus = status;
+      this.currentTick = 0;
+      this.currentStatusIndex = 0;
+      this.maxStatusIndex = this.status[this.currentStatus][
+        this.currentDirection
+      ].length;
+    }
   }
 
   updateJumpBoundaries() {

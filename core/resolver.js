@@ -52,6 +52,9 @@ class CollisionResolver {
         player.y = entity.top - player.height;
 
         // stop falling if collides with top part of entity
+        if (player.currentStatus === 'jumping') {
+          player.updateStatus('idle');
+        }
         player.isFalling = false;
         player.isJumping = false;
       }
@@ -61,7 +64,8 @@ class CollisionResolver {
     if (
       (player.left + player.width <= entity.left ||
         player.right - player.width >= entity.right) &&
-      !player.isJumping
+      !player.isJumping &&
+      player.y < 215
     ) {
       player.isFalling = true;
     }

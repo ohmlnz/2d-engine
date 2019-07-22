@@ -50,12 +50,12 @@ class Engine {
       player.updateJumpBoundaries();
       player.y += 3.5;
       // if player touches the ground
-      if (player.y > 200) {
+      if (player.y > 215) {
         player.updateStatus('idle');
         player.isFalling = false;
         player.ay = 0;
         player.vy = 0;
-        player.y = 200;
+        player.y = 215;
       }
     }
   }
