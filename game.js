@@ -1,5 +1,7 @@
-import { requestAnimFrame } from './helpers.js';
-import { gamepadAPI } from './controller/gamepad.js';
+// Would the consumer from the context API work in here? TODO: FIND. OUT.
+import { ConstantsContext } from "../App.js";
+import { requestAnimFrame } from "./helpers.js";
+import { gamepadAPI } from "./controller/gamepad.js";
 
 let canvas,
   ctx,
@@ -15,9 +17,9 @@ class Game {
   }
 
   init() {
-    canvas = document.getElementById('canvas');
-    ctx = canvas.getContext('2d');
-    canvas.width = 1500;
+    canvas = document.getElementById("canvas");
+    ctx = canvas.getContext("2d");
+    canvas.width = 700;
     canvas.height = 250;
 
     // return if browser doesn't support WebGL or if failure
@@ -25,7 +27,7 @@ class Game {
 
     if (!this.auto) {
       //keyboard controls
-      ['keydown', 'keyup'].forEach(event => {
+      ["keydown", "keyup"].forEach(event => {
         document.addEventListener(
           event,
           e => {
