@@ -1,5 +1,5 @@
 class CollisionResolver {
-  resolveElastic(player, entity) {
+  resolveElastic(player, entity, constants) {
     let pMidX = player.midX;
     let pMidY = player.midY;
     let aMidX = entity.midX;
@@ -62,10 +62,10 @@ class CollisionResolver {
 
     // re-enable falling boolean if exceeds bounds of entity
     if (
-      (player.left + player.width <= entity.left ||
-        player.right - player.width >= entity.right) &&
+      (player.left + (player.width - 5) <= entity.left ||
+        player.right - (player.width - 5) >= entity.right) &&
       !player.isJumping &&
-      player.y < 215
+      player.y < constants.y
     ) {
       player.isFalling = true;
     }

@@ -1,7 +1,6 @@
-// Would the consumer from the context API work in here? TODO: FIND. OUT.
-import { ConstantsContext } from "../App.js";
-import { requestAnimFrame } from "./helpers.js";
-import { gamepadAPI } from "./controller/gamepad.js";
+import { requestAnimFrame } from './helpers.js';
+import { gamepadAPI } from './controller/gamepad.js';
+import { constants } from './constants.js';
 
 let canvas,
   ctx,
@@ -11,14 +10,16 @@ class Game {
   constructor(player, entity, engine, controls, auto) {
     this.player = player;
     this.entity = entity;
-    this.engine = engine;
     this.controls = controls;
     this.auto = auto || false;
+    this.constants = constants;
+    this.engine = engine;
   }
 
-  init() {
-    canvas = document.getElementById("canvas");
-    ctx = canvas.getContext("2d");
+  init(updatedState) {
+    this.constants = updatedState;
+    canvas = document.getElementById('canvas');
+    ctx = canvas.getContext('2d');
     canvas.width = 700;
     canvas.height = 250;
 
@@ -27,7 +28,7 @@ class Game {
 
     if (!this.auto) {
       //keyboard controls
-      ["keydown", "keyup"].forEach(event => {
+      ['keydown', 'keyup'].forEach(event => {
         document.addEventListener(
           event,
           e => {
@@ -65,7 +66,7 @@ class Game {
 
     ctx.translate(camX, camY);
 
-    this.engine.step(this.player, this.entity ? this.entity : null, input);
+    this.engine.step(this.player, this.entity || null, input, this.constants);
     this.draw();
   };
 
