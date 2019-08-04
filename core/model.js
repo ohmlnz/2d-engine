@@ -32,7 +32,6 @@ class PhysicsEntity {
 
     // Ticks
     this.currentTick = 0;
-    this.animationTick = 0;
 
     // Speed
     this.speed = constants.acc;
