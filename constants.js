@@ -4,6 +4,12 @@ export const constants = {
   y: 215
 };
 
+export const settings = {
+  linear: true,
+  acceleration: false,
+  jumps: true
+};
+
 export const keys = {
   39: 'RIGHT',
   37: 'LEFT',

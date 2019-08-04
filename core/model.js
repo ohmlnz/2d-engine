@@ -1,7 +1,7 @@
 import { constants } from '../constants.js';
 
 class PhysicsEntity {
-  constructor(posX, posY, width, height, color, status = null) {
+  constructor(posX, posY, width, height, color, spritesheet = null) {
     this.width = width;
     this.height = height;
 
@@ -24,7 +24,7 @@ class PhysicsEntity {
     this.color = color;
 
     // Status
-    this.status = status;
+    this.spritesheet = spritesheet;
     this.currentStatus = 'idle';
     this.currentDirection = 'right';
     this.currentStatusIndex = 0;
@@ -32,6 +32,7 @@ class PhysicsEntity {
 
     // Ticks
     this.currentTick = 0;
+    this.animationTick = 0;
 
     // Speed
     this.speed = constants.acc;
@@ -43,6 +44,10 @@ class PhysicsEntity {
 
     // Framerate
     this.framerate = 8;
+
+    // Particles
+    this.animations = null;
+    this.animation = null;
   }
 
   updateDirection(direction) {
@@ -52,22 +57,24 @@ class PhysicsEntity {
   updateTick() {
     this.currentTick++;
 
+    // Sprite animations
     if (this.currentTick >= this.framerate) {
       this.currentTick = 0;
       this.currentStatusIndex++;
     }
 
+    // Sprite arrays indexes
     if (this.currentStatusIndex >= this.maxStatusIndex) {
       this.currentStatusIndex = 0;
     }
   }
 
   updateStatus(status) {
-    if (this.status) {
+    if (this.spritesheet) {
       this.currentStatus = status;
       this.currentTick = 0;
       this.currentStatusIndex = 0;
-      this.maxStatusIndex = this.status[this.currentStatus][
+      this.maxStatusIndex = this.spritesheet[this.currentStatus][
         this.currentDirection
       ].length;
     }
