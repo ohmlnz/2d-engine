@@ -1,6 +1,3 @@
-import { colors } from '../constants.js';
-import { random } from '../helpers.js';
-
 export const levelOne = {
   'block-1': {
     color: 'red',
@@ -18,18 +15,4 @@ export const levelOne = {
     color: 'purple',
     dimensions: [1200, 200, 250, 50]
   }
-};
-
-export const randomLevel = () => {
-  let properties = {};
-  for (let i = 0, c = random(10); i < c; i++) {
-    properties = {
-      ...properties,
-      [`block-${i}`]: {
-        color: colors[Math.floor(random(colors.length - 1))],
-        dimensions: [random(1500, 100), 250, random(100, 50), random(-10, -50)]
-      }
-    };
-  }
-  return properties;
 };
