@@ -22,7 +22,7 @@ class Game {
     this.ctx = this.canvas.getContext('2d');
     this.canvas.width = 700;
     this.canvas.height = 250;
-    this.canvas.style.background = `url(${this.state.background})`;
+    //this.canvas.style.background = `url(${this.state.background})`;
 
     // return if browser doesn't support WebGL or if failure
     if (!window.WebGLRenderingContext || !this.ctx) return;
@@ -113,10 +113,16 @@ class Game {
       this.entity.forEach(e => {
         this.ctx.fillStyle = e.color;
         this.ctx.fillRect(e.x, e.y, e.width, e.height);
+
+        // Draw associated particle
+        const { spritesheet, currentStatus, currentStatusIndex } = e;
+        const { sheet } = spritesheet;
+        const { x, y, w, h } = spritesheet[currentStatus][currentStatusIndex];
+        e.updateTick();
+
+        this.ctx.drawImage(sheet.image, x, y, w, h, e.x, e.y, w, h);
       });
     }
-
-    // Draw particles
   };
 }
 

@@ -1,7 +1,7 @@
 export const levelOne = {
   'block-1': {
     color: 'red',
-    dimensions: [200, 200, 50, 50]
+    dimensions: [100, 200, 50, 50]
   },
   'block-2': {
     color: 'blue',

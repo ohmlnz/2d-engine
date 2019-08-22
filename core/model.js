@@ -25,10 +25,14 @@ class PhysicsEntity {
 
     // Status
     this.spritesheet = spritesheet;
-    this.currentStatus = 'idle';
+    this.currentStatus =
+      Object.keys(this.spritesheet).find(e => e === 'idle') ||
+      Object.keys(this.spritesheet).filter(e => e !== 'sheet')[0];
     this.currentDirection = 'right';
     this.currentStatusIndex = 0;
-    this.maxStatusIndex = 0;
+    this.maxStatusIndex = this.spritesheet.sheet.particles
+      ? this.spritesheet[this.currentStatus].length
+      : this.spritesheet[this.currentStatus][this.currentDirection].length;
 
     // Ticks
     this.currentTick = 0;
@@ -43,10 +47,6 @@ class PhysicsEntity {
 
     // Framerate
     this.framerate = 8;
-
-    // Particles
-    this.animations = null;
-    this.animation = null;
   }
 
   updateDirection(direction) {
@@ -73,9 +73,9 @@ class PhysicsEntity {
       this.currentStatus = status;
       this.currentTick = 0;
       this.currentStatusIndex = 0;
-      this.maxStatusIndex = this.spritesheet[this.currentStatus][
-        this.currentDirection
-      ].length;
+      this.maxStatusIndex = this.spritesheet.sheet.particles
+        ? this.spritesheet[this.currentStatus].length
+        : this.spritesheet[this.currentStatus][this.currentDirection].length;
     }
   }
 

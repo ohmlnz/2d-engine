@@ -174,6 +174,7 @@ export const spriteData = {
   meta: {
     image: image,
     size: { w: 128, h: 128 },
+    particles: false,
     scale: 1
   }
 };

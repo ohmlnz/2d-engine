@@ -2,11 +2,11 @@
 // Adding type property to each sprite and
 // changing the image associated to the metadata
 
-import animations from './animations.png';
+import smoke from './smoke.png';
 let image = new Image();
-image.src = animations;
+image.src = smoke;
 
-export const animationData = {
+export const smokeParticles = {
   frames: {
     sprite71: {
       frame: { x: 0, y: 0, w: 128, h: 128 },
@@ -92,6 +92,7 @@ export const animationData = {
   meta: {
     image: image,
     size: { w: 1280, h: 128 },
+    particles: true,
     scale: 1
   }
 };

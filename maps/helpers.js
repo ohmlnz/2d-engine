@@ -84,3 +84,31 @@ export const generateBackground = points => {
 
   return image;
 };
+
+export const createSpriteSheetMapping = data => {
+  const { frames, meta } = data;
+  let spritesheet = {
+    sheet: { image: meta.image, size: meta.size, particles: meta.particles }
+  };
+  Object.keys(frames).forEach(e => {
+    const current = meta.particles
+      ? spritesheet[frames[e].type]
+      : spritesheet[frames[e].type] &&
+        spritesheet[frames[e].type][frames[e].direction];
+    const sprite = current ? [...current] : [];
+    sprite.push(frames[e].frame);
+
+    spritesheet = {
+      ...spritesheet,
+      ...(meta.particles
+        ? { [frames[e].type]: sprite }
+        : {
+            [frames[e].type]: {
+              ...spritesheet[frames[e].type],
+              [frames[e].direction]: sprite
+            }
+          })
+    };
+  });
+  return spritesheet;
+};
