@@ -5,10 +5,10 @@ class Engine {
     this.constants = null;
   }
 
-  async step(player, entities, input, constants) {
+  async step(player, entities, input, state) {
     this.player = player;
     this.input = input;
-    this.constants = constants;
+    this.constants = state.constants;
 
     // handles positional logic
     //await this.handleAcceleration();
@@ -20,7 +20,7 @@ class Engine {
       entities.forEach(collidee => {
         let collision = this.isColliding(collidee);
         if (collision) {
-          this.resolveElastic(collidee, constants);
+          this.resolveElastic(collidee, this.constants);
         }
       });
     }

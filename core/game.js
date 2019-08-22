@@ -1,6 +1,7 @@
 import { requestAnimFrame } from '../helpers.js';
 import { gamepadAPI } from '../controller/gamepad.js';
 import { constants } from '../constants.js';
+import businessman from '../sprites/businessman/businessman.png';
 
 class Game {
   constructor(player, entity, engine, controls, auto) {
@@ -8,7 +9,7 @@ class Game {
     this.entity = entity;
     this.controls = controls;
     this.auto = auto || false;
-    this.constants = constants;
+    this.state = constants;
     this.engine = engine;
     this.canvas = null;
     this.ctx = null;
@@ -16,11 +17,12 @@ class Game {
   }
 
   init(updatedState) {
-    this.constants = updatedState;
+    this.state = updatedState;
     this.canvas = document.getElementById('canvas');
     this.ctx = this.canvas.getContext('2d');
     this.canvas.width = 700;
     this.canvas.height = 250;
+    this.canvas.style.background = `url(${this.state.background})`;
 
     // return if browser doesn't support WebGL or if failure
     if (!window.WebGLRenderingContext || !this.ctx) return;
@@ -65,12 +67,7 @@ class Game {
 
     this.ctx.translate(camX, camY);
 
-    this.engine.step(
-      this.player,
-      this.entity || null,
-      this.input,
-      this.constants
-    );
+    this.engine.step(this.player, this.entity || null, this.input, this.state);
     this.draw();
   };
 
