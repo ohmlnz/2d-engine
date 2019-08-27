@@ -1,7 +1,6 @@
 import { requestAnimFrame } from '../helpers.js';
 import { gamepadAPI } from '../controller/gamepad.js';
 import { constants } from '../constants.js';
-import businessman from '../sprites/businessman/businessman.png';
 
 class Game {
   constructor(player, entity, engine, controls, auto) {
@@ -115,12 +114,12 @@ class Game {
         this.ctx.fillRect(e.x, e.y, e.width, e.height);
 
         // Draw associated particle
-        const { spritesheet, currentStatus, currentStatusIndex } = e;
-        const { sheet } = spritesheet;
-        const { x, y, w, h } = spritesheet[currentStatus][currentStatusIndex];
-        e.updateTick();
+        // const { spritesheet, currentStatus, currentStatusIndex } = e;
+        // const { sheet } = spritesheet;
+        // const { x, y, w, h } = spritesheet[currentStatus][currentStatusIndex];
+        // e.updateTick();
 
-        this.ctx.drawImage(sheet.image, x, y, w, h, e.x, e.y, w, h);
+        // this.ctx.drawImage(sheet.image, x, y, w, h, e.x, e.y, w, h);
       });
     }
   };

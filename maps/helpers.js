@@ -88,7 +88,7 @@ export const generateBackground = points => {
 export const createSpriteSheetMapping = data => {
   const { frames, meta } = data;
   let spritesheet = {
-    sheet: { image: meta.image, size: meta.size, particles: meta.particles }
+    sheet: { image: meta.image, size: meta.size }
   };
   Object.keys(frames).forEach(e => {
     const current = meta.particles
