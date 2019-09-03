@@ -1,11 +1,13 @@
 import { requestAnimFrame } from '../helpers.js';
 import { gamepadAPI } from '../controller/gamepad.js';
 import { constants } from '../constants.js';
+import bg from './bg.png';
 
 class Game {
-  constructor(player, entity, engine, controls, auto) {
+  constructor(player, entity, enemy, engine, controls, auto) {
     this.player = player;
     this.entity = entity;
+    this.enemy = enemy;
     this.controls = controls;
     this.auto = auto || false;
     this.state = constants;
@@ -19,9 +21,10 @@ class Game {
     this.state = updatedState;
     this.canvas = document.getElementById('canvas');
     this.ctx = this.canvas.getContext('2d');
-    this.canvas.width = 700;
-    this.canvas.height = 250;
-    //this.canvas.style.background = `url(${this.state.background})`;
+    this.canvas.width = 1000;
+    this.canvas.height = 500;
+    this.canvas.style.background = `url(${bg})`;
+    this.canvas.style.backgroundSize = 'cover';
 
     // return if browser doesn't support WebGL or if failure
     if (!window.WebGLRenderingContext || !this.ctx) return;
@@ -66,50 +69,28 @@ class Game {
 
     this.ctx.translate(camX, camY);
 
-    this.engine.step(this.player, this.entity || null, this.input, this.state);
-    this.draw();
+    this.engine.step(this.player, this.entity || null, this.enemy, this.input, this.state);
+    [this.player, ...this.entity, this.enemy].forEach(e => this.draw(e));
   };
 
-  draw = () => {
-    if (!this.player.spritesheet) {
-      this.ctx.fillStyle = this.player.color;
-      this.ctx.fillRect(
-        this.player.x,
-        this.player.y,
-        this.player.width,
-        this.player.height
-      );
+  draw = entity => {
+    if (!entity.spritesheet) {
+      this.ctx.fillStyle = entity.color;
+      this.ctx.fillRect(entity.x, entity.y, entity.width, entity.height);
     } else {
-      const {
-        spritesheet,
-        currentStatus,
-        currentStatusIndex,
-        currentDirection
-      } = this.player;
+      const { spritesheet, currentStatus, currentStatusIndex, currentDirection } = entity;
       const { sheet } = spritesheet;
-      const { x, y, w, h } = spritesheet[currentStatus][currentDirection][
-        currentStatusIndex
-      ];
+      const { x, y, w, h } = spritesheet[currentStatus][currentDirection][currentStatusIndex];
 
-      this.player.updateTick();
-
+      entity.updateTick();
+      entity.hasOwnProperty('randomMotion') && entity.generateRandomMotion();
       // Draw the sprite
-      this.ctx.drawImage(
-        sheet.image,
-        x,
-        y,
-        w,
-        h,
-        this.player.x,
-        this.player.y,
-        w,
-        h
-      );
+      this.ctx.drawImage(sheet.image, x, y, w, h, entity.x, entity.y, w, h);
     }
 
     // Draw entities
-    if (this.entity.length) {
-      this.entity.forEach(e => {
+    if (entity.length) {
+      entity.forEach(e => {
         this.ctx.fillStyle = e.color;
         this.ctx.fillRect(e.x, e.y, e.width, e.height);
 

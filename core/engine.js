@@ -5,24 +5,43 @@ class Engine {
     this.constants = null;
   }
 
-  async step(player, entities, input, state) {
+  step(player, entities, enemy, input, state) {
     this.player = player;
     this.input = input;
     this.constants = state.constants;
 
     // handles positional logic
     //await this.handleAcceleration();
-    await this.handleConstantMotion();
-    await this.handleJumps();
+    this.handleConstantMotion();
+    this.handleJumps();
+    this.handleRandomMotion(enemy);
 
     // detects and resolve each collision individually
+    const temp = [player, enemy]; // to be array of player and enemies in the future
     if (entities) {
       entities.forEach(collidee => {
-        let collision = this.isColliding(collidee);
-        if (collision) {
-          this.resolveElastic(collidee, this.constants);
-        }
+        temp.forEach(collider => {
+          let collision = this.isColliding(collider, collidee);
+          if (collision) {
+            this.resolveCollision(collider, collidee, this.constants);
+          }
+        });
       });
+    }
+
+    // enemy collision WIP
+    if (this.isColliding(enemy, player) && enemy.isAttacking) {
+      this.player.health = this.player.health - enemy.damages;
+    }
+  }
+
+  handleRandomMotion(entity) {
+    if (entity.randomMotion && entity.initial_x <= entity.range) {
+      entity.updateStatus('walking');
+      entity.x = entity.currentDirection === 'right' ? entity.x + 5 : entity.x - 5;
+      entity.initial_x += 5;
+    } else {
+      entity.updateStatus('idle');
     }
   }
 
@@ -30,13 +49,11 @@ class Engine {
     const { input, player } = this;
     if (input['RIGHT']) {
       player.updateDirection('right');
-      player.currentStatus !== 'walking' &&
-        !player.isJumping &&
-        player.updateStatus('walking');
+      player.updateStatus('walking');
       player.x += 5;
     } else if (input['LEFT']) {
       player.updateDirection('left');
-      player.currentStatus !== 'walking' && player.updateStatus('walking');
+      player.updateStatus('walking');
       player.x -= 5;
     } else if (player.currentStatus === 'walking') {
       player.updateStatus('idle');
@@ -58,7 +75,7 @@ class Engine {
     player.x += player.vx;
   }
 
-  async handleJumps() {
+  handleJumps() {
     const { input, player, constants } = this;
     if (input['UP'] && !player.isJumping && !player.isFalling) {
       player.isJumping = true;
@@ -85,8 +102,7 @@ class Engine {
     }
   }
 
-  isColliding(collidee) {
-    const collider = this.player;
+  isColliding(collider, collidee) {
     let l1 = collider.left;
     let t1 = collider.top;
     let r1 = collider.right;
@@ -104,8 +120,7 @@ class Engine {
     return true;
   }
 
-  resolveElastic(entity, constants) {
-    const { player } = this;
+  resolveCollision(player, entity, constants) {
     let pMidX = player.midX;
     let pMidY = player.midY;
     let aMidX = entity.midX;
@@ -157,7 +172,7 @@ class Engine {
         // If the player is approaching from negative Y
         player.y = entity.top - player.height;
 
-        // stop falling if collides with top part of entity
+        // stop falling if collides with top part of the entity
         if (player.currentStatus === 'jumping') {
           player.updateStatus('idle');
         }
@@ -166,7 +181,7 @@ class Engine {
       }
     }
 
-    // re-enable falling boolean if exceeds bounds of entity
+    // re-enable falling boolean if exceeds bounds of the entity
     if (
       (player.left + (player.width - 5) <= entity.left ||
         player.right - (player.width - 5) >= entity.right) &&

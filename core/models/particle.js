@@ -5,9 +5,7 @@ class Particle extends PhysicsEntity {
     super(posX, posY, width, height, color);
     // Status
     this.spritesheet = spritesheet;
-    this.currentStatus = Object.keys(this.spritesheet).filter(
-      e => e !== 'sheet'
-    )[0];
+    this.currentStatus = Object.keys(this.spritesheet).filter(e => e !== 'sheet')[0];
     this.currentStatusIndex = 0;
     this.maxStatusIndex = this.spritesheet[this.currentStatus].length;
 

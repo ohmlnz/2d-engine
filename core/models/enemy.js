@@ -1,7 +1,13 @@
 import PhysicsEntity from './entity';
 import { constants } from '../../constants.js';
+import { random } from '../../helpers.js';
 
-class Player extends PhysicsEntity {
+// handle collisions with other entities
+// If player is detected, runs towards it
+// If obstacles in the way, try to get over them
+// If in range of player stop and attack
+
+class Enemy extends PhysicsEntity {
   constructor(posX, posY, width, height, color, spritesheet = null) {
     super(posX, posY, width, height, color);
     // Status
@@ -13,6 +19,7 @@ class Player extends PhysicsEntity {
 
     // Tickers
     this.animationTicker = 0;
+    this.motionTicker = 0;
 
     // Speed
     this.speed = constants.acc;
@@ -24,8 +31,23 @@ class Player extends PhysicsEntity {
 
     // Framerate
     this.framerate = 8;
-
     this.health = 100;
+
+    // AI
+    this.randomMotion = false;
+    this.isAttacking = false;
+    this.range = 100;
+    this.initial_x = 0;
+    this.damages = 10;
+  }
+
+  generateRandomMotion() {
+    if (this.motionTicker >= 200) {
+      this.motionTicker = 0;
+      this.initial_x = 0;
+      this.randomMotion = !this.randomMotion;
+      this.updateDirection(['left', 'right'][random(1, 0)]);
+    }
   }
 
   updateDirection(direction) {
@@ -34,6 +56,7 @@ class Player extends PhysicsEntity {
 
   updateTick() {
     this.animationTicker++;
+    this.motionTicker++;
 
     // Sprite animations
     if (this.animationTicker >= this.framerate) {
@@ -61,4 +84,4 @@ class Player extends PhysicsEntity {
   }
 }
 
-export default Player;
+export default Enemy;

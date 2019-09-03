@@ -93,8 +93,7 @@ export const createSpriteSheetMapping = data => {
   Object.keys(frames).forEach(e => {
     const current = meta.particles
       ? spritesheet[frames[e].type]
-      : spritesheet[frames[e].type] &&
-        spritesheet[frames[e].type][frames[e].direction];
+      : spritesheet[frames[e].type] && spritesheet[frames[e].type][frames[e].direction];
     const sprite = current ? [...current] : [];
     sprite.push(frames[e].frame);
 
