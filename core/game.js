@@ -21,9 +21,9 @@ class Game {
     this.state = updatedState;
     this.canvas = document.getElementById('canvas');
     this.ctx = this.canvas.getContext('2d');
-    this.canvas.width = 1000;
-    this.canvas.height = 500;
-    this.canvas.style.background = `url(${bg})`;
+    this.canvas.width = constants.width;
+    this.canvas.height = constants.height;
+    this.canvas.style.background = `url(${this.state.background}) no-repeat`;
     this.canvas.style.backgroundSize = 'cover';
 
     // return if browser doesn't support WebGL or if failure
@@ -64,8 +64,8 @@ class Game {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
     // clamp the camera position to the world bounds while centering the camera around the player
-    const camX = clamp(-this.player.x + this.canvas.width / 2, -1000, 800);
-    const camY = -120 + this.canvas.height / 2;
+    const camX = clamp(-this.player.x + this.canvas.width / 2, -this.canvas.width, 0);
+    const camY = 0;
 
     this.ctx.translate(camX, camY);
 
@@ -77,6 +77,12 @@ class Game {
     if (!entity.spritesheet) {
       this.ctx.fillStyle = entity.color;
       this.ctx.fillRect(entity.x, entity.y, entity.width, entity.height);
+      if (entity.selected) {
+        this.ctx.strokeStyle = 'yellow';
+        this.ctx.stroke();
+        this.ctx.lineWidth = 5;
+        this.ctx.strokeRect(entity.x, entity.y, entity.width, entity.height);
+      }
     } else {
       const { spritesheet, currentStatus, currentStatusIndex, currentDirection } = entity;
       const { sheet } = spritesheet;
@@ -84,24 +90,7 @@ class Game {
 
       entity.updateTick();
       entity.hasOwnProperty('randomMotion') && entity.generateRandomMotion();
-      // Draw the sprite
       this.ctx.drawImage(sheet.image, x, y, w, h, entity.x, entity.y, w, h);
-    }
-
-    // Draw entities
-    if (entity.length) {
-      entity.forEach(e => {
-        this.ctx.fillStyle = e.color;
-        this.ctx.fillRect(e.x, e.y, e.width, e.height);
-
-        // Draw associated particle
-        // const { spritesheet, currentStatus, currentStatusIndex } = e;
-        // const { sheet } = spritesheet;
-        // const { x, y, w, h } = spritesheet[currentStatus][currentStatusIndex];
-        // e.updateTick();
-
-        // this.ctx.drawImage(sheet.image, x, y, w, h, e.x, e.y, w, h);
-      });
     }
   };
 }

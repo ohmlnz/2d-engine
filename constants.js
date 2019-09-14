@@ -1,7 +1,9 @@
 export const constants = {
   acc: 0.1,
   x: 150,
-  y: 300
+  y: 430,
+  width: 1000,
+  height: 460
 };
 
 export const settings = {
@@ -16,4 +18,4 @@ export const keys = {
   32: 'UP'
 };
 
-export const colors = ['red', 'blue', 'yellow', 'green', 'black', 'pink', 'brown'];
+export const colors = ['pink', 'purple']; //['red', 'blue', 'yellow', 'green', 'black', 'pink', 'brown'];

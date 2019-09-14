@@ -1,4 +1,4 @@
-import { colors } from '../constants.js';
+import { colors, constants } from '../constants.js';
 import { random } from '../helpers.js';
 
 const randomColor = () => colors[Math.floor(random(colors.length - 1))];
@@ -41,10 +41,15 @@ export const displacePoints = (
         (points_copy[i][0] + points_copy[i + 1][0]) / 2,
         (points_copy[i][1] + points_copy[i + 1][1]) / 2
       ];
-      // Randomly displace positively or negatively
-      midpoint[1] += [-verticalDisplacement, verticalDisplacement][
-        Math.floor(Math.random() * (1 - 0 + 1)) + 0
-      ];
+
+      // Randomly displace positively or negatively (except for initial point)
+      if (i === 0) {
+        midpoint[1] += -verticalDisplacement;
+      } else {
+        midpoint[1] += [-verticalDisplacement, verticalDisplacement][
+          Math.floor(Math.random() * (1 - 0 + 1)) + 0
+        ];
+      }
       // Insert new points and sort based on x value
       points.push(midpoint);
       points.sort((a, b) => a[0] - b[0]);
@@ -59,8 +64,8 @@ export const displacePoints = (
 export const generateBackground = points => {
   // Create canvas element
   const canvas = document.createElement('canvas');
-  canvas.width = 700;
-  canvas.height = 250;
+  canvas.width = constants.width;
+  canvas.height = constants.height;
 
   // Draw background
   if (canvas.getContext) {
@@ -79,8 +84,8 @@ export const generateBackground = points => {
   const dataUrl = canvas.toDataURL();
   let image = document.createElement('img');
   image.src = dataUrl;
-  image.style.width = '700px';
-  image.style.height = '250px';
+  image.style.width = `${constants.width}px`;
+  image.style.height = `${constants.height}px`;
 
   return image;
 };

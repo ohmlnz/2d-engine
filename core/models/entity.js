@@ -22,6 +22,8 @@ class PhysicsEntity {
     this.color = color;
   }
 
+  selected = false;
+
   updateBounds() {
     this.halfWidth = this.width * 0.5;
     this.halfHeight = this.height * 0.5;
